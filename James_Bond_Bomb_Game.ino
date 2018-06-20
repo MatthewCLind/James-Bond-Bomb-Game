@@ -4,6 +4,16 @@
 *******************************************************************************************************
 */
 
+/*
+ * Author: Matthew Lind
+ * Github: https://github.com/MatthewCLind/James-Bond-Bomb-Game
+ * 
+ *  Note to everyone using this code
+ *    -Please leave this comment block in, I'd appreciate it
+ *    -Also, please feel to reach out to me with comments and questions,
+ *           and also to share anything cool you do with this code!
+ */
+
 // STATE VARIABLES
 const int STANDBY   = 0;
 const int COUNTDOWN = 1;
