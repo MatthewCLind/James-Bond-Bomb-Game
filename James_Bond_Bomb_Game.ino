@@ -7,7 +7,8 @@
 /*
  * Author: Matthew Lind
  * Github: https://github.com/MatthewCLind/James-Bond-Bomb-Game
- * 
+ * This goes along with a YouTube video: https://youtu.be/jQ43RBiS8FQ
+ *  
  *  Note to everyone using this code
  *    -Please leave this comment block in, I'd appreciate it
  *    -Also, please feel to reach out to me with comments and questions,
