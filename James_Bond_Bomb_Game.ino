@@ -8,11 +8,20 @@
  * Author: Matthew Lind
  * Github: https://github.com/MatthewCLind/James-Bond-Bomb-Game
  * This goes along with a YouTube video: https://youtu.be/jQ43RBiS8FQ
+ * 
+ * License: This code is public domain but you buy me a beer if you use this and we meet someday (Beerware license).
  *  
- *  Note to everyone using this code
+ * Non-license requests:
  *    -Please leave this comment block in, I'd appreciate it
  *    -Also, please feel to reach out to me with comments and questions,
  *           and also to share anything cool you do with this code!
+ *
+ * This code replicates a bomb-diffusing game. It uses a couple of LEDs to show the bomb's state and some jumper wires
+ * that you can cut to disarm the bomb --or not--
+ * 
+ * The purpose of this code is first to show a tidy way to program sketches using defined states rather than if/else trees to
+ * determine behavior. This code is also useful as a template for games and puzzles e.g. in an escape room setting
+ *
  */
 
 // STATE VARIABLES
@@ -30,11 +39,13 @@ const int NUM_WIRES = 4;
 const int WIRE_PINS[NUM_WIRES] = {3, 4, 5, 6};
 const int CORRECT_WIRE = 5;
 
-//TIMER
-const long BOMB_TIME = 30000L; //30 seconds or you all get it!
+//TIME
+const long BOMB_TIME = 30000L; //30 seconds before you get what's coming to you!
 
 /*
 Standby mode
+ default state, wait for bomb to be armed
+
   -Both LEDs off
   -Counting down = false
 
@@ -65,6 +76,8 @@ int standby_func()
 
 /* 
 Countdowm mode
+ the main part of the game where the clock starts ticking down. Players must disarm during this state
+
   -Counting down = true
   -Zapping LED is off
   -Counting-down-LED is blinking
@@ -83,6 +96,7 @@ int countdown_func()
     time_to_die = millis() + BOMB_TIME;
   }
 
+  //flash the COUNT_LED to indicate that time is running out
   digitalWrite(ZAP_LED, LOW);
   static boolean blink_on = true;
   int blink_duration = 500;
@@ -94,6 +108,7 @@ int countdown_func()
   }
   digitalWrite(COUNT_LED, blink_on);
 
+  //look for incorrect wire pulls, which means you blow up
   boolean any_wrong_wire_pulled = false;
   for(int i = 0; i < NUM_WIRES; i++)
   {
@@ -108,6 +123,7 @@ int countdown_func()
   }
   else if(digitalRead(CORRECT_WIRE) == HIGH)
   {
+    //You did it!
     next_state = DISARMED;
     time_to_die = 0;
   }
@@ -117,10 +133,12 @@ int countdown_func()
 
 /*
 Zapping mode
+ the "you lost" state
+
   -Zapping LED is on and angry
   -Counting-down LED is off
 
-  -Cannot move to any other state. u ded
+  -Cannot move to any other state. u ded. Though, you might want to change this if you want to play multiple times in a row
  */
 int zapping_func()
 {
@@ -135,6 +153,8 @@ int zapping_func()
 
 /*
 Disarmed mode
+ "You win" state
+
   -Counting-down LED is on solid
   -Zapping LED is off
 
